@@ -19,7 +19,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("{userId}")
     public ResponseEntity<UserDTO> getUser(@PathVariable int userId) {
         UserDTO user = userService.getUser(userId);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -31,7 +31,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @DeleteMapping
+    @DeleteMapping("{userId}")
     public ResponseEntity deleteUser(@PathVariable int userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
