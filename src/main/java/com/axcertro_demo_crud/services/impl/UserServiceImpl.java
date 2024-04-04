@@ -8,6 +8,8 @@ import com.axcertro_demo_crud.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -16,23 +18,38 @@ public class UserServiceImpl implements UserService {
     private UserConverter userConverter;
 
     public UserDTO createUser(UserDTO userDTO) {
-        User user = userRepository.save(userConverter.convertUserDTOToUser(userDTO));
-        return userConverter.convertUserToUserDTO(user);
+        try {
+            User user = userRepository.save(userConverter.convertUserDTOToUser(userDTO));
+            return userConverter.convertUserToUserDTO(user);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     public UserDTO getUser(int userId){
-        User user = userRepository.findById(userId).get();
-        return userConverter.convertUserToUserDTO(user);
+        try {
+            User user = userRepository.findById(userId).get();
+            return userConverter.convertUserToUserDTO(user);
+        } catch (NoSuchElementException e) {
+            System.out.println("Invalid User ID!");
+            return null;
+        }
     }
 
     public UserDTO updateUser(UserDTO userDTO) {
-        User user = userRepository.findById(userDTO.getId()).get();
-        user.setFirst_name(userDTO.getFirst_name());
-        user.setLast_name(userDTO.getLast_name());
-        user.setEmail(userDTO.getEmail());
+        try {
+            User user = userRepository.findById(userDTO.getId()).get();
+            user.setFirst_name(userDTO.getFirst_name());
+            user.setLast_name(userDTO.getLast_name());
+            user.setEmail(userDTO.getEmail());
 
-        User updatedUser = userRepository.save(user);
-        return userConverter.convertUserToUserDTO(updatedUser);
+            User updatedUser = userRepository.save(user);
+            return userConverter.convertUserToUserDTO(updatedUser);
+        } catch (NoSuchElementException e) {
+            System.out.println("Invalid User ID!");
+            return null;
+        }
     }
 
     public void deleteUser(int userId){

@@ -16,18 +16,27 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO userDTO) {
         UserDTO user = userService.createUser(userDTO);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @GetMapping("{userId}")
     public ResponseEntity<UserDTO> getUser(@PathVariable int userId) {
         UserDTO user = userService.getUser(userId);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
         UserDTO user = userService.updateUser(userDTO);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
